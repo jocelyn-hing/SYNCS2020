@@ -61,24 +61,11 @@ export default class CameraPage extends React.Component {
             return <View />;
         } else if (hasCameraPermission === false) {
             return <Text>Access to camera has been denied.</Text>;
-        }
-        const styles = StyleSheet.create({
-            camera: {
-				-moz-transform: scale(-1, 1);
-				-webkit-transform: scale(-1, 1);
-				-o-transform: scale(-1, 1);
-				-ms-transform: scale(-1, 1);
-				transform: scale(-1, 1);}
-		  });
+		}
 
         return (
             <React.Fragment>
-                <View style = {{
-                -moz-transform: scale(-1, 1);
-				-webkit-transform: scale(-1, 1);
-				-o-transform: scale(-1, 1);
-				-ms-transform: scale(-1, 1);
-				transform: scale(-1, 1);}}>
+                <View>
                     <Camera
                         type={cameraType}
                         flashMode={flashMode}
