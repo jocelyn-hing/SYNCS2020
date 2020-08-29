@@ -1,6 +1,6 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
-import { View, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import * as Permissions from 'expo-permissions';
 
 import styles from './styles';
@@ -62,10 +62,23 @@ export default class CameraPage extends React.Component {
         } else if (hasCameraPermission === false) {
             return <Text>Access to camera has been denied.</Text>;
         }
+        const styles = StyleSheet.create({
+            camera: {
+				-moz-transform: scale(-1, 1);
+				-webkit-transform: scale(-1, 1);
+				-o-transform: scale(-1, 1);
+				-ms-transform: scale(-1, 1);
+				transform: scale(-1, 1);}
+		  });
 
         return (
             <React.Fragment>
-                <View>
+                <View style = {{
+                -moz-transform: scale(-1, 1);
+				-webkit-transform: scale(-1, 1);
+				-o-transform: scale(-1, 1);
+				-ms-transform: scale(-1, 1);
+				transform: scale(-1, 1);}}>
                     <Camera
                         type={cameraType}
                         flashMode={flashMode}

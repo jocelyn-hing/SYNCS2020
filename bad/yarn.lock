@@ -1671,13 +1671,6 @@ expo-calendar@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-calendar/-/expo-calendar-5.0.1.tgz#52660f08d3a41109080ecfb2ee7ebbcd9f67c071"
 
-expo-camera@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-8.0.0.tgz#a0caee7baf1f2013203fe6a4635125ade12ec164"
-  dependencies:
-    lodash "^4.6.0"
-    prop-types "^15.6.0"
-
 expo-camera@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-5.0.1.tgz#1c90cda9e368148dbf538d14bd047cdf33ea3350"
@@ -1800,10 +1793,6 @@ expo-media-library@~5.0.1:
 expo-payments-stripe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-payments-stripe/-/expo-payments-stripe-5.0.1.tgz#da096cf81fc03dbfd540ce6814cc67222d7447ff"
-
-expo-permissions@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.0.0.tgz#5a45e8451dd7ff37c9e6ce5e2447818372547813"
 
 expo-permissions@~5.0.1:
   version "5.0.1"

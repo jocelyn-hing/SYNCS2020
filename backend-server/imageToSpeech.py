@@ -74,11 +74,15 @@ def imageToSpeech(imageBase64):
             ),
             ignore_index=True
         )
-
-    textOutput = df['description'][0]
-    # Translate other languages into english
-    # textOutput = translateText(textOutput, "en")
-    print(textOutput)
+    
+    textOutput = ""
+    try:
+	    textOutput = df['description'][0]
+	    # Translate other languages into english
+	    # textOutput = translateText(textOutput, "en")
+	    print(textOutput)
+    except:
+		print("No text found")
 
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)
