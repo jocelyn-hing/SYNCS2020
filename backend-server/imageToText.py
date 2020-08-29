@@ -29,7 +29,7 @@ def getLanguageCode(code):
 def translateText(text, target):
     output = translateClient.translate(text, target)
     
-    print(output)
+    return output
 
 def text_to_wav(voice_name, text):
     language_code = '-'.join(voice_name.split('-')[:2])
@@ -73,7 +73,8 @@ def imageToSpeech(imageBase64):
         )
 
     textOutput = df['description'][0]
-    print(textOutput)
+    # Translate other languages into english
+    textOutput = translateText(textOutput, "en")
 
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)

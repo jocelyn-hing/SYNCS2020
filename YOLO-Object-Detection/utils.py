@@ -130,10 +130,10 @@ def detect_objects(model, img, iou_thresh, nms_thresh):
     finish = time.time()
     
     # Print the time it took to detect objects
-    print('\n\nIt took {:.3f}'.format(finish - start), 'seconds to detect the objects in the image.\n')
+    # print('\n\nIt took {:.3f}'.format(finish - start), 'seconds to detect the objects in the image.\n')
     
     # Print the number of objects detected
-    print('Number of Objects Detected:', len(boxes), '\n')
+    # print('Number of Objects Detected:', len(boxes), '\n')
     
     return boxes
 
@@ -163,14 +163,14 @@ def load_class_names(namesfile):
 
 
 def print_objects(boxes, class_names):    
-    print('Objects Found and Confidence Level:\n')
+    # print('Objects Found and Confidence Level:\n')
     found = []
     for i in range(len(boxes)):
         box = boxes[i]
         if len(box) >= 7 and class_names:
             cls_conf = box[5]
             cls_id = box[6]
-            print('%i. %s: %f' % (i + 1, class_names[cls_id], cls_conf))
+            # print('%i. %s: %f' % (i + 1, class_names[cls_id], cls_conf))
             found.append(class_names[cls_id])
     return found
 
@@ -259,6 +259,8 @@ def plot_boxes(img, boxes, class_names, plot_labels, color = None):
             # Draw the labels on top of the image
             a.text(x1 + lxc, y1 - lyc, conf_tx, fontsize = 24, color = 'k',
                    bbox = dict(facecolor = rgb, edgecolor = rgb, alpha = 0.8))        
-        
-    plt.show()
+    # fig = plt.figure()
+
+    # fig.savefig('latest.png')
+    # plt.show()
     plt.savefig('latest.png')
