@@ -62,6 +62,8 @@ def single_image(img_path):
     # Plot the image with bounding boxes and corresponding object class labels
     plot_boxes(original_image, boxes, class_names, plot_labels=True)
 
+    return found
+
 def video(video_path):
     vidcap = cv2.VideoCapture(video_path)
     success, image = vidcap.read()
@@ -76,10 +78,47 @@ def video(video_path):
 
 def crop(img_path, num_squares=9):
     tiles = image_slicer.slice(img_path, num_squares)
-    for tile in tiles:
-        single_image(tile.filename)
+    position_labels = {}
+    for x, tile in enumerate(tiles):
+        single_labels = single_image(tile.filename)
+        if x == 1:
+            position = 'top left'
+            position_labels[position] = set(single_labels)
+        if x == 2:
+            position = 'top center'
+            position_labels[position] = set(single_labels)
+        if x == 3:
+            position = 'top right'
+            position_labels[position] = set(single_labels)
+        if x == 4:
+            position = 'middle left'
+            position_labels[position] = set(single_labels)
+        if x == 5:
+            position = 'middle center'
+            position_labels[position] = set(single_labels)
+        if x == 6:
+            position = 'middle right'
+            position_labels[position] = set(single_labels)
+        if x == 7:
+            position = 'bottom left'
+            position_labels[position] = set(single_labels)
+        if x == 8:
+            position = 'bottom center'
+            position_labels[position] = set(single_labels)
+        if x == 9:
+            position = 'bottom right'
+            position_labels[position] = set(single_labels)
+    return position_labels
 
-single_image('images/mankini.jpg')
-video('images/WAPiro.mp4')
+# single_image('images/mankini.jpg')
+# video('images/WAPiro.mp4')
+# crop('images/mankini.jpg', num_squares=9)
 
-crop('images/mankini.jpg', num_squares=9)
+def analysis(img_path):
+    cropped_labels = crop(img_path)
+    single_labels = single_image(img_path)
+    print(single_labels)
+    print(cropped_labels)
+    return single_labels, cropped_labels
+
+analysis('images/mankini.jpg')
