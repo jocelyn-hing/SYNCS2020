@@ -6,8 +6,10 @@ from google.cloud import texttospeech
 from google.cloud import translate_v2 as translate
 import pandas as pd
 import vlc
-from flask import Flask, request, make_response, Response
 import base64
+
+from flask import Flask, request, make_response, Response
+from flask_cors import CORS
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'visionAPIKey.json'
 
@@ -53,9 +55,10 @@ def text_to_wav(voice_name, text):
     return filename
 
 def imageToSpeech(imageBase64):
+    # print(imageBase64)
     content = base64.b64decode(imageBase64)
     # with io.open(os.path.join(FOLDER_PATH, filename), 'rb') as imageFile:
-    #content = imageFile.read()
+    # content = imageFile.read()
     image = vision.types.Image(content=content)
     response = client.text_detection(image=image)
     texts = response.text_annotations
@@ -74,17 +77,23 @@ def imageToSpeech(imageBase64):
 
     textOutput = df['description'][0]
     # Translate other languages into english
-    textOutput = translateText(textOutput, "en")
+    # textOutput = translateText(textOutput, "en")
+    print(textOutput)
 
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)
     return wavAbsFilePath
 
 app = Flask(__name__)
+app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
+app.config['CORS_RESOURCES'] = {r"*": {"origins": "*"}}
+CORS(app)
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def hello():
-    imageBase64 = request.headers.get('imageData')
+    # request.get_data()
+    imageBase64 = request.data.decode("utf-8")
+    print(type(imageBase64))
     wavAbsFilePath = imageToSpeech(imageBase64)
     with io.open(wavAbsFilePath, 'rb') as wavFile:
         resp = Response(base64.b64encode(wavFile.read()))
@@ -93,5 +102,3 @@ def hello():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# translateText("Hello this is my name", "ko")

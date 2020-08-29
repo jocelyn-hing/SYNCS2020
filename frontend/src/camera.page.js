@@ -30,11 +30,15 @@ export default class CameraPage extends React.Component {
     handleShortCapture = async () => {
         const photoData = await this.camera.takePictureAsync();
         this.setState({ capturing: false, captures: [photoData, ...this.state.captures] });
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:5000/');
-        console.log(btoa(photoData));
-        xhr.send(btoa(photoData));
-        
+        // var xhr = new XMLHttpRequest();
+        // xhr.open('GET', 'http://localhost:5000/');
+        var imageBase64 = photoData.base64.replace(/^data:image\/(png|jpg);base64,/, '');
+        console.log(imageBase64);
+        // // xhr.setRequestHeader('imageData', imageBase64);
+        // xhr.send(imageBase64);
+        fetch('http://localhost:5000/', {method: 'POST', body: imageBase64})
+		  .then(response => response.json())
+		  .then(data => console.log(data));
     };
 
     // handleLongCapture = async () => {
