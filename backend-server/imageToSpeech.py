@@ -11,6 +11,15 @@ import base64
 from flask import Flask, request, make_response, Response
 from flask_cors import CORS
 
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
+
+import io
+from PIL import Image
+
+from functions import analysis
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'visionAPIKey.json'
 
 speechClient = texttospeech.TextToSpeechClient()
@@ -77,12 +86,12 @@ def imageToSpeech(imageBase64):
     
     textOutput = ""
     try:
-	    textOutput = df['description'][0]
-	    # Translate other languages into english
-	    # textOutput = translateText(textOutput, "en")
-	    print(textOutput)
+        textOutput = df['description'][0]
+        # Translate other languages into english
+        # textOutput = translateText(textOutput, "en")
+        print(textOutput)
     except:
-		print("No text found")
+        print("No text found")
 
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)
@@ -98,6 +107,19 @@ def hello():
     # request.get_data()
     imageBase64 = request.data.decode("utf-8")
     print(type(imageBase64))
+    print(type(request.data))
+
+    decoded = base64.decodebytes(request.data)
+
+    fd = os.open("file.jpg", os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
+
+    os.write(fd, decoded)
+
+    os.close(fd)
+
+    analysis("file.jpg")
+
+
     wavAbsFilePath = imageToSpeech(imageBase64)
     with io.open(wavAbsFilePath, 'rb') as wavFile:
         resp = Response(base64.b64encode(wavFile.read()))
