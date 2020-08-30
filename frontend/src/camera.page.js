@@ -33,13 +33,13 @@ export default class CameraPage extends React.Component {
         // var xhr = new XMLHttpRequest();
         // xhr.open('GET', 'http://localhost:5000/');
         var imageBase64 = photoData.base64.replace(/^data:image\/(png|jpg);base64,/, '');
-        console.log(imageBase64);
+        // console.log(imageBase64);
         // // xhr.setRequestHeader('imageData', imageBase64);
         // xhr.send(imageBase64);
-        fetch('http://localhost:5000/', {method: 'POST', body: imageBase64})
+        fetch('http://' + window.location.hostname + ':5000/', {method: 'POST', body: imageBase64})
 		  .then(async response => {
 		    return response.text().then(async text => {
-				console.log(text);
+				// console.log(text);
 				var wavData = atob(text);
 				const audioContext = new AudioContext();
 				const arr = Uint8Array.from(wavData, c => c.charCodeAt(0))
