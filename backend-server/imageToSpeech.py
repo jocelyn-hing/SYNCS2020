@@ -67,7 +67,7 @@ def text_to_wav(voice_name, text):
     return filename
 
 
-def imageToSpeech(imageBase64):
+def imageToSpeech(imageBase64, reqdata):
     # print(imageBase64)
     content = base64.b64decode(imageBase64)
     # with io.open(os.path.join(FOLDER_PATH, filename), 'rb') as imageFile:
@@ -95,7 +95,21 @@ def imageToSpeech(imageBase64):
         # textOutput = translateText(textOutput, "en")
         print(textOutput)
     except:
-        print("No text found")
+        # print("No text found")
+        decoded = base64.decodebytes(reqdata)
+        fd = os.open("file.jpg", os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
+        os.write(fd, decoded)
+        os.close(fd)
+        single_labels, cropped_labels = analysis("file.jpg")
+        print("cropped_labels", cropped_labels)
+        textOutput = ""
+        for k,v in cropped_labels.items():
+            print(k)
+            print(v)
+            if len(v) > 0:
+                v = list(v)
+                textOutput += str([i for i in v]) + " located in " + k
+
 
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)
@@ -114,18 +128,7 @@ def hello():
     print(type(imageBase64))
     print(type(request.data))
 
-    decoded = base64.decodebytes(request.data)
-
-    fd = os.open("file.jpg", os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
-
-    os.write(fd, decoded)
-
-    os.close(fd)
-
-    analysis("file.jpg")
-
-
-    wavAbsFilePath = imageToSpeech(imageBase64)
+    wavAbsFilePath = imageToSpeech(imageBase64, request.data)
     with io.open(wavAbsFilePath, 'rb') as wavFile:
         resp = Response(base64.b64encode(wavFile.read()))
     return resp
