@@ -29,18 +29,21 @@ translateClient = translate.Client()
 FILENAME = 'workers.png'
 FOLDER_PATH = r'/mnt/c/Users/Peter/Documents/PythonVenv/SyncHack/image'
 
+
 # Returns language and related code for function translateText
 def getLanguageCode(code):
-        result = translateClient.get_languages()
-        languageList = pd.DataFrame(result)
-        
-        print(languageList)
+    result = translateClient.get_languages()
+    languageList = pd.DataFrame(result)
 
-# Translates language 
+    print(languageList)
+
+
+# Translates language
 def translateText(text, target):
     output = translateClient.translate(text, target)
-    
+
     return output
+
 
 def text_to_wav(voice_name, text):
     language_code = '-'.join(voice_name.split('-')[:2])
@@ -63,6 +66,7 @@ def text_to_wav(voice_name, text):
         print(f'Audio content written to "{filename}"')
     return filename
 
+
 def imageToSpeech(imageBase64):
     # print(imageBase64)
     content = base64.b64decode(imageBase64)
@@ -83,7 +87,7 @@ def imageToSpeech(imageBase64):
             ),
             ignore_index=True
         )
-    
+
     textOutput = ""
     try:
         textOutput = df['description'][0]
@@ -96,6 +100,7 @@ def imageToSpeech(imageBase64):
     wavFilePath = text_to_wav('en-US-Wavenet-F', textOutput)
     wavAbsFilePath = os.path.abspath(wavFilePath)
     return wavAbsFilePath
+
 
 app = Flask(__name__)
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
